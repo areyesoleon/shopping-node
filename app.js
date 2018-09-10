@@ -20,6 +20,7 @@ app.use(bodyParser.json());
 //Import Routes
 const moduleRoutes = require('./routes/module');
 const routeRoutes = require('./routes/route');
+const userRoutes = require('./routes/user');
 
 //Conexion DB
 mongoose.connection.openUri('mongodb://localhost:27017/weHome',(err,res)=>{
@@ -29,6 +30,7 @@ mongoose.connection.openUri('mongodb://localhost:27017/weHome',(err,res)=>{
 
 app.use('/config/module',moduleRoutes);
 app.use('/config/route',routeRoutes);
+app.use('/admin/user',userRoutes);
 
 //Escuchar peteciones
 app.listen(3000, ()=>{
