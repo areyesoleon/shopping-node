@@ -22,6 +22,7 @@ const moduleRoutes = require('./routes/module');
 const routeRoutes = require('./routes/route');
 const userRoutes = require('./routes/user');
 const placeRoutes = require('./routes/place');
+const loginRoutes = require('./routes/login');
 
 //Conexion DB
 mongoose.connection.openUri('mongodb://localhost:27017/weHome',(err,res)=>{
@@ -33,6 +34,7 @@ app.use('/config/module',moduleRoutes);
 app.use('/config/route',routeRoutes);
 app.use('/admin/user',userRoutes);
 app.use('/admin/place',placeRoutes);
+app.use('/opt/login',loginRoutes);
 
 //Escuchar peteciones
 app.listen(3000, ()=>{
