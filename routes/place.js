@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const Place = require('../models/place');
+const mdAutentication = require('../middlewares/autenticacion');
 
 app.post('/', (req, res) => {
   const body = req.body;
@@ -53,6 +54,35 @@ app.get('/:id', (req, res) => {
     });
 });
 
+app.get('/', mdAutentication.verifyToken, (req, res) => {
+  const userId = req.user._id;
+  Place.find({ userId: userId })
+    .exec((err, places) => {
+      if (err) {
+        return res.status(500).json({
+          ok: false,
+          message: 'Error al buscar los lugares',
+          errors: {
+            message: 'Error al buscar los lugares'
+          }
+        })
+      }
+      if (!places.length) {
+        return res.status(400).json({
+          ok: false,
+          message: 'No tiene lugares creados',
+          errors: {
+            message: 'No tiene lugares creados'
+          }
+        })
+      }
+      res.status(200).json({
+        ok: true,
+        places: places
+      })
+    })
+});
+
 app.put('/:id', (req, res) => {
   const id = req.params.id;
   const body = req.body;
@@ -78,7 +108,7 @@ app.put('/:id', (req, res) => {
     place.save((err, place) => {
       if (err) {
         return res.status(500).json({
-          ok:false,
+          ok: false,
           message: 'Error al actualizar el lugar',
           errors: err
         });
