@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const Item = require('../models/item');
 const mdAutentication = require('../middlewares/autenticacion');
-app.post('/',mdAutentication.verifyToken, (req, res) => {
+app.post('/', mdAutentication.verifyToken, (req, res) => {
   const body = req.body;
   const userId = req.user._id;
   const item = new Item({
@@ -51,6 +51,35 @@ app.get('/:id', (req, res) => {
         item: item
       });
     });
+});
+
+app.get('/', mdAutentication.verifyToken, (req, res) => {
+  const userId = req.user._id
+  Item.find({ userId: userId })
+    .exec((err, items) => {
+      if (err) {
+        return res.status(500).json({
+          ok: false,
+          message: 'Error al buscar los productos',
+          errors: {
+            message: 'Error al buscar los productos'
+          }
+        })
+      }
+      if (!items) {
+        return res.status(400).json({
+          ok: false,
+          message: 'No tiene lugares creados',
+          errors: {
+            message: 'No tiene lugares creados'
+          }
+        });
+      }
+      res.status(200).json({
+        ok: true,
+        items: items
+      });
+    })
 });
 
 app.put('/:id', (req, res) => {
