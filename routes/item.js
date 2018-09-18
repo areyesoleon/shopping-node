@@ -1,12 +1,13 @@
 const express = require('express');
 const app = express();
 const Item = require('../models/item');
-
-app.post('/', (req, res) => {
+const mdAutentication = require('../middlewares/autenticacion');
+app.post('/',mdAutentication.verifyToken, (req, res) => {
   const body = req.body;
+  const userId = req.user._id;
   const item = new Item({
     name: body.name,
-    userId: body.userId,
+    userId: userId,
     state: body.state,
   });
 
