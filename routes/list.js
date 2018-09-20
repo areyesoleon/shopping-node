@@ -6,7 +6,6 @@ const mdAutentication = require('../middlewares/autenticacion');
 
 app.post('/', mdAutentication.verifyToken, (req, res) => {
   const body = req.body;
-  console.log(body);
   const list = new List({
     name: body.name,
     finished: body.finished,

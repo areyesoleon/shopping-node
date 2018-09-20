@@ -12,7 +12,6 @@ app.post('/', (req, res) => {
   });
 
   place.save((err, placeSaved) => {
-    console.log(placeSaved);
     if (err) {
       return res.status(400).json({
         ok: false,
