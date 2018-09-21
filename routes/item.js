@@ -82,6 +82,36 @@ app.get('/', mdAutentication.verifyToken, (req, res) => {
     })
 });
 
+app.get('/state/:state', mdAutentication.verifyToken, (req, res) => {
+  const userId = req.user._id
+  const state = req.params.state;
+  Item.find({ userId: userId, state: state })
+    .exec((err, items) => {
+      if (err) {
+        return res.status(500).json({
+          ok: false,
+          message: 'Error al buscar los productos',
+          errors: {
+            message: 'Error al buscar los productos'
+          }
+        })
+      }
+      if (!items) {
+        return res.status(400).json({
+          ok: false,
+          message: 'No tiene lugares creados',
+          errors: {
+            message: 'No tiene lugares creados'
+          }
+        });
+      }
+      res.status(200).json({
+        ok: true,
+        items: items
+      });
+    })
+});
+
 app.put('/:id', (req, res) => {
   const id = req.params.id;
   const body = req.body;

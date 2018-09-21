@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
 const List = require('../models/list');
-const ItemList = require('../models/itemList');
 const mdAutentication = require('../middlewares/autenticacion');
 
 app.post('/', mdAutentication.verifyToken, (req, res) => {
