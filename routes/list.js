@@ -30,8 +30,8 @@ app.post('/', mdAutentication.verifyToken, (req, res) => {
 app.get('/state/:finished/:idPlace', mdAutentication.verifyToken, (req, res) => {
   const finished = req.params.finished;
   const idPlace = req.params.idPlace;
-  List.find({ finished: finished, idPlace: idPlace})
-  .select('_id name')
+  List.find({ finished: finished, idPlace: idPlace })
+    .select('_id name')
     .exec((err, lists) => {
       if (err) {
         return res.status(500).json({
@@ -56,5 +56,74 @@ app.get('/state/:finished/:idPlace', mdAutentication.verifyToken, (req, res) => 
         lists: lists
       });
     });
+});
+
+app.get('/:id', mdAutentication.verifyToken, (req, res) => {
+  const id = req.params.id;
+  List.findById(id)
+    .exec((err, list) => {
+      if (err) {
+        return res.status(500).json({
+          ok: false,
+          message: 'Error al buscar las listas',
+          errors: {
+            message: 'Error al buscar las listas'
+          }
+        });
+      }
+      if (!list) {
+        return res.status(400).json({
+          ok: false,
+          message: 'No tiene listas creadas',
+          errors: {
+            message: 'No tiene listas creadas'
+          }
+        })
+      }
+      res.status(200).json({
+        ok: true,
+        list: list
+      });
+    });
+});
+
+app.put('/:id', (req, res) => {
+  const id = req.params.id;
+  const body = req.body;
+  List.findById(id, (err, list) => {
+    if (err) {
+      return res.status(500).json({
+        ok: false,
+        message: 'Error al actualizar la lista',
+        errors: err
+      })
+    }
+    if (!list) {
+      return res.status(400).json({
+        ok: false,
+        message: 'La lista con el id' + id + 'No existe',
+        errors: {
+          message: 'La lista con el id' + id + 'No existe'
+        }
+      })
+    }
+    list.name = body.name;
+    list.itemList = body.itemList;
+    list.save((err, list) => {
+      if (err) {
+        return res.status(500).json({
+          ok: false,
+          message: 'Error al acutalizar la lista',
+          errors: {
+            message: 'Error al acutalizar la lista'
+          }
+        });
+      }
+      res.status(200).json({
+        ok: true,
+        list: list
+      });
+    })
+  });
 });
 module.exports = app;
