@@ -101,11 +101,11 @@ app.put('/:id', (req, res) => {
     if (!list) {
       return res.status(400).json({
         ok: false,
-        message: 'La lista con el id' + id + 'No existe',
+        message: 'La lista con el id ' + id + ' No existe',
         errors: {
-          message: 'La lista con el id' + id + 'No existe'
+          message: 'La lista con el id ' + id + ' No existe'
         }
-      })
+      });
     }
     list.name = body.name;
     list.itemList = body.itemList;

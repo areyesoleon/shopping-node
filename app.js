@@ -24,6 +24,7 @@ const userRoutes = require('./routes/user');
 const placeRoutes = require('./routes/place');
 const loginRoutes = require('./routes/login');
 const itemRoutes = require('./routes/item');
+const buyedRoutes = require('./routes/buyed');
 const listRoutes = require('./routes/list');
 
 //Conexion DB
@@ -38,6 +39,7 @@ app.use('/admin/user',userRoutes);
 app.use('/admin/place',placeRoutes);
 app.use('/admin/item',itemRoutes);
 app.use('/admin/list',listRoutes);
+app.use('/admin/buyed',buyedRoutes);
 app.use('/opt/login',loginRoutes);
 
 //Escuchar peteciones

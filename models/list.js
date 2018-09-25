@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const ItemBuyed = require('./itemBuyed');
 const listSchema = new Schema({
   name: {
     type: String,
@@ -13,10 +14,8 @@ const listSchema = new Schema({
     type: String,
     required: [true, 'El lugar es obligatorio']
   },
-  itemList: {
-    type: Object,
-    required: [true, 'Tiene que seleccionar un producto']
-  }
+  itemList: [ItemBuyed],
+  child: ItemBuyed
 });
 
 module.exports = mongoose.model('List', listSchema);
